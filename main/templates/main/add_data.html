@@ -15,7 +15,7 @@
     this.style.color = "blue"
     $.ajax({
     type: 'POST',
-    url: '{% url "main:addData" %}',
+    url: '{% url "main:addData_async" %}',
     data: {
         postid: $(this).val(),
         csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
