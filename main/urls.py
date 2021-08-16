@@ -5,7 +5,7 @@ from . import views
 app_name = 'main'
 urlpatterns = [
     path('', views.index, name='index'),
-    path('adddata/', views.addData, name="addData"),
+    path('adddata/', views.addData_async, name="addData_async"),
     path('allrecipes/', views.allRecipes, name="allRecipes"),
     path('myrecipes/', views.myrecipes, name='myrecipes'),
     path('ingredients/', views.ingredientPicker, name='ingredientPicker'),
