@@ -24,7 +24,7 @@
     success: function (json) {
         var button = document.getElementById('thing');
         if (json['added'] == 'yes') {
-        recipeliked.innerText = 'Data Added'
+        button.innerText = 'Data Added'
         }
     },
     error: function (xhr, errmsg, err) {
