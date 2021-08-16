@@ -351,6 +351,7 @@ def addData(request):
         for index, row in df.iterrows():
             recipe_name = row['name']
             time = row['time']
+            print(time)
             if time == '':
                 time = 0
             url = row['url'].replace('\'','')
@@ -392,7 +393,7 @@ def addData(request):
                         recipe.genre.add(genre_query)
                     except genres3.DoesNotExist:
                         print('genre doenst exist')
-                        
+
             print(recipe_name)
 
         url = 'https://raw.githubusercontent.com/oliviaflexx/recipe/main/django_recipe/mysite/main/or_ingredients.csv'
