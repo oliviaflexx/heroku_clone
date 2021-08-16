@@ -342,10 +342,9 @@ def addData(response):
         url = 'https://raw.githubusercontent.com/oliviaflexx/recipe/main/django_recipe/mysite/main/names.csv'
         df = pd.read_csv(url, error_bad_lines=False)
         for index, row in df.iterrows():
-            for row in df:
-                ingredient = row[1]
-                entry = ingredients3(name=ingredient)
-                entry.save()
+            ingredient = row['ingredient']
+            entry = ingredients3(name=ingredient)
+            entry.save()
 
         with open('recipes3.csv', mode='r') as csv_file:
             csv_reader = csv.DictReader(csv_file)
