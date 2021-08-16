@@ -343,7 +343,7 @@ def addData(response):
         df = pd.read_csv(url, error_bad_lines=False)
         for index, row in df.iterrows():
             for row in df:
-                ingredient = row['ingredient']
+                ingredient = row[1]
                 entry = ingredients3(name=ingredient)
                 entry.save()
 
