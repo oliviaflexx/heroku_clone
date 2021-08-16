@@ -360,8 +360,7 @@ def addData(request):
                 calories = 0
             recipe = recipes3.objects.create(name=recipe_name,time=time,url=url,image=image,calories=calories)
             recipe.save()
-            print(recipe_name)
-            
+
             url = 'https://raw.githubusercontent.com/oliviaflexx/recipe/main/django_recipe/mysite/main/recipe_ingredients.csv'
             df2 = pd.read_csv(url, error_bad_lines=False)
             for index, ing_row in df2.iterrows():
@@ -393,6 +392,8 @@ def addData(request):
                         recipe.genre.add(genre_query)
                     except genres3.DoesNotExist:
                         print('genre doenst exist')
+                        
+            print(recipe_name)
 
         url = 'https://raw.githubusercontent.com/oliviaflexx/recipe/main/django_recipe/mysite/main/or_ingredients.csv'
         df4 = pd.read_csv(url, error_bad_lines=False)
