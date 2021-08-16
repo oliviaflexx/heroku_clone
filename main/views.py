@@ -347,6 +347,7 @@ def addDataAsync():
 
     url = 'https://raw.githubusercontent.com/oliviaflexx/recipe/main/django_recipe/mysite/main/recipes3.csv'
     df = pd.read_csv(url, error_bad_lines=False)
+    print(df)
     for index, row in df.iterrows():
         recipe_name = row['name']
         time = row['time']

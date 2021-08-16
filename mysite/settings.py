@@ -149,3 +149,5 @@ INTERNAL_IPS = [
 ]
 
 django_heroku.settings(locals())
+
+os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
