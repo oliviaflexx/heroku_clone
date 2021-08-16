@@ -8,8 +8,7 @@ from .funky import add_up, sub_out
 from django.core.paginator import Paginator
 import json
 import pandas as pd
-from asgiref.sync import sync_to_async
-import asyncio
+from .tasks import sleepy
 
 def checky(request):
     if request.POST.get('action') == 'post':
@@ -329,7 +328,6 @@ def groceryList(response):
     else:
         return render(response, 'main/grocery_list.html')
 
-@sync_to_async
 def addDataAsync():
     recipes3.objects.all().delete()
     ingredients3.objects.all().delete()
@@ -407,15 +405,5 @@ def addDataAsync():
         entry.save()
 
 def addData(request):
-    if request.POST.get('action') == 'post':
-        return JsonResponse({'added': 'yes'})
-    else:
-        return render(request, 'main/add_data.html')
-
-async def addData_async(request):
-    if request.method == "POST":
-        task1 = asyncio.ensure_future(addDataAsync())
-        await asyncio.wait([task1])
-        return JsonResponse({'added': 'yes'})
-    else:
-        return render(request, 'main/add_data.html')
+    sleepy.delay()
+    return render(request, 'main/add_data.html')
