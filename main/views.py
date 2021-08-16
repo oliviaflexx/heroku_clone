@@ -417,4 +417,5 @@ async def addData_async(request):
         await asyncio.wait([task1])
         return JsonResponse({'added': 'yes'})
     else:
-        return render(request, 'main/add_data.html')
+        if request.user.is_authenticated:
+            return render(request, 'main/add_data.html')
