@@ -10,6 +10,7 @@ from .funky import add_up, sub_out
 from django.core.paginator import Paginator
 import json
 import pandas as pd
+from asgiref.sync import sync_to_async
 
 def checky(request):
     if request.POST.get('action') == 'post':
@@ -329,8 +330,7 @@ def groceryList(response):
     else:
         return render(response, 'main/grocery_list.html')
 
-
-def addData(request):
+async def addData(request):
     if request.POST.get('action') == 'post':
         recipes3.objects.all().delete()
         ingredients3.objects.all().delete()
