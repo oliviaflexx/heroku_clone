@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+import django_heroku
 
 CRISPY_TEMPLATE_PACK="bootstrap4"
 
@@ -147,3 +148,4 @@ INTERNAL_IPS = [
     '127.0.0.1'
 ]
 
+django_heroku.settings(locals())
