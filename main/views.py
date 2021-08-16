@@ -352,12 +352,12 @@ def addData(request):
             recipe_name = row['name']
             time = row['time']
             print(time)
-            if time == '':
+            if time == 'nan':
                 time = 0
             url = row['url'].replace('\'','')
             image = row['image']
             calories = row['calories']
-            if calories == '':
+            if calories == "nan":
                 calories = 0
             recipe = recipes3.objects.create(name=recipe_name,time=time,url=url,image=image,calories=calories)
             recipe.save()
