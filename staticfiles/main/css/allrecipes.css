@@ -1,0 +1,146 @@
+.row.topper {
+    padding-top: 50px;
+}
+
+div.recipe-container {
+    background-color: white;
+    margin-top: 30px;
+    position: relative;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    max-width: 500px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-bottom: 10px;
+
+  }
+
+  div.recipe-container:hover {
+    background: linear-gradient(45deg, #F48C06, #FFBA08);
+    transform: translateY(-7px);
+    transition: all 0.3s ease 0s;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  div.img-container {
+    width: 300px; 
+    height: 300px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    position: relative;
+    margin: 0 auto;
+    border-radius: 20px;
+  }
+  img {
+    width: 300px; 
+    height: 300px;
+    object-fit: cover;
+    border-radius: 20px;
+  }
+    
+  .add-position-fixed {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+  }
+
+  .showmore-position-fixed {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+  }
+  button {
+    display: inline-block;
+    border: none;
+    border-radius: 50%;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 0;
+    text-decoration: none;
+    background: white;
+    color: black;
+    font-family: sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+    transition: background 250ms ease-in-out, transform 150ms ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    font-size: 28px;
+    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+}
+
+  button[disabled=disabled], button:disabled {
+    background-color: #FF7B00;
+  }
+  .like {
+    margin-right: 40px;
+    margin-top: 50px;
+  }
+
+  a {
+    color: black;
+  }
+
+  .bi.bi-hand-thumbs-up-fill, .bi.bi-hand-thumbs-down-fill {
+    color: #FF7B00;
+  }
+
+  .bi.bi-check-lg {
+    color: #19d016;
+  }
+
+  #save {
+    border-radius: 25px;
+    background-color: #FFC300;
+    font-size: 25px;
+    margin-top: 25px;
+  }
+
+  #save:hover {
+    background-color: #FFEA00;
+  }
+
+  .recipe-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 5px;
+  }
+
+  a:hover {
+    text-decoration: none;
+    color: white;
+  }
+
+  .info {
+    position: absolute;
+    width: 100%;
+    top: 80px;
+    /* right: 120px; */
+    background-color: #f8f9fab3;
+    /* stroke-opacity: 100%; */
+    padding-top: 15px;
+    font-size: larger;
+    visibility: hidden;
+  }
+
+  .progress, .progress-bar {
+    border-radius: 20px;
+  }
+  .progress-bar {
+    background: linear-gradient(45deg, #FDDB9B, #FCC55F);
+    color: black;
+  }
+  .progress {
+    height: 35px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+    background: linear-gradient(45deg, white, #FFF3D6);
+  }
+
+  .progress p {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 10px;
+    font-size: 20px;
+  }

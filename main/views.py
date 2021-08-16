@@ -338,14 +338,14 @@ def addData(response):
         user_recipes.objects.all().delete()
         grocery_list.objects.all().delete()
 
-        with open('/Users/oliviafelix/recipe-2/django_recipe/mysite/main/names.csv', mode='r') as csv_file:
+        with open('names.csv', mode='r') as csv_file:
             csv_reader = csv.DictReader(csv_file)
             for row in csv_reader:
                 ingredient = row['ingredient']
                 entry = ingredients3(name=ingredient)
                 entry.save()
 
-        with open('/Users/oliviafelix/recipe-2/django_recipe/mysite/main/recipes3.csv', mode='r') as csv_file:
+        with open('recipes3.csv', mode='r') as csv_file:
             csv_reader = csv.DictReader(csv_file)
             for row in csv_reader:
                 recipe_name = row['name']
@@ -361,7 +361,7 @@ def addData(response):
                 recipe = recipes3.objects.create(name=recipe_name,time=time,url=url,image=image,calories=calories)
                 recipe.save()
 
-                with open('/Users/oliviafelix/recipe-2/django_recipe/mysite/main/recipe_ingredients.csv', mode='r') as ing_csv_file:
+                with open('recipe_ingredients.csv', mode='r') as ing_csv_file:
                     ing_csv_reader = csv.DictReader(ing_csv_file)
                     for ing_row in ing_csv_reader:
                         ing_recipe_name = ing_row['name']
@@ -381,7 +381,7 @@ def addData(response):
                             except ingredients3.DoesNotExist:
                                 print(ingredient)
 
-                with open('/Users/oliviafelix/recipe-2/django_recipe/mysite/main/genres.csv', mode='r') as genre_csv_file:
+                with open('genres.csv', mode='r') as genre_csv_file:
                     genre_csv_reader = csv.DictReader(genre_csv_file)
                     for genre_row in genre_csv_reader:
                         genre_recipe_name = genre_row['recipe_name']
@@ -393,7 +393,7 @@ def addData(response):
                             except genres3.DoesNotExist:
                                 print(genre_recipe_name)
 
-        with open('/Users/oliviafelix/recipe-2/django_recipe/mysite/main/or_ingredients.csv', mode='r') as or_csv_file:
+        with open('or_ingredients.csv', mode='r') as or_csv_file:
             or_csv_reader = csv.DictReader(or_csv_file)
             for or_row in or_csv_reader:
                 or_name = or_row['or_name']

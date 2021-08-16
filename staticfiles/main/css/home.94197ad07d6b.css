@@ -1,0 +1,101 @@
+#top_orange {
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    min-height: 500px;
+}
+#top_orange h1 {
+    padding-top: 200px;
+    color: white;
+    text-shadow: 4px 2px 5px black;
+    font-size: 3rem;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.row {
+    justify-content: center;
+}
+
+.col-12 img {
+    position: relative;
+    left: 5%;
+    padding-top: 20px;
+}
+
+.instructions {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 20px;
+}
+
+.row {
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+}
+
+img {
+    opacity: 0;
+}
+
+.animate-step1 {
+    position: relative;
+    -webkit-animation-name: animatestep1;
+    -webkit-animation-duration: 5s;
+    animation-name: animatestep1;
+    animation-duration: 3s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+  }
+
+  @-webkit-keyframes animatestep1 {
+    0% { bottom:-50px; opacity:0; }
+    100% { bottom:0px; opacity:1; }
+  }
+
+  @keyframes animatestep1 { 
+    0% { bottom:-50px; opacity:0; }
+    100% { bottom:0px; opacity:1; }
+  }
+
+  .animate-step2 {
+    position: relative;
+    -webkit-animation-name: animatestep2;
+    -webkit-animation-duration: 5s;
+    animation-name: animatestep2;
+    animation-duration: 3s;
+    animation-delay: 1s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+  }
+
+  @-webkit-keyframes animatestep2 {
+    0% { bottom:-50px; opacity:0; }
+    100% { bottom:0px; opacity:1; }
+
+  }
+  @keyframes animatestep2 { 
+    0% { bottom:-50px; opacity:0; }
+    100% { bottom:0px; opacity:1; }
+  }
+
+  .animate-step3 {
+    position: relative;
+    -webkit-animation-name: animatestep3;
+    -webkit-animation-duration: 5s;
+    animation-name: animatestep3;
+    animation-duration: 3s;
+    animation-delay: 2s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+  }
+
+  @-webkit-keyframes animatestep3 {
+    0% { bottom:-50px; opacity:0; }
+    100% { bottom:0px; opacity:1; }
+
+  }
+  @keyframes animatestep3 { 
+    0% { bottom:-50px; opacity:0; }
+    100% { bottom:0px; opacity:1; }
+  }
