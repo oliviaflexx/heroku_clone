@@ -1,0 +1,289 @@
+{% extends "main/base.html" %}
+{% block title %}Available Recipes{% endblock %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'main/css/allrecipes.css' %}">
+<link rel="stylesheet" href="{% static 'main/css/pagination_blue.css' %}">
+
+  {% if user.is_authenticated%}
+  <div class="row topper" style="justify-content: space-around;">
+    <h1>Available Recipes</h1>
+  </div>
+  <div class="row topper" style="justify-content: space-around;">
+    <h3>Filters:</h3>
+  </div>
+  <form method="post" action="#">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-12 col-md-4 text-center">
+        <h4 class=text-center>Sort by</h4>
+        {% if orderby == 'none' %}
+          <input type='radio' id='calories' name='orderby' value='calories'>
+          <label for='calories'>Calories</label><br>
+          <input type='radio' id='time' name='orderby' value='time'>
+          <label for='time'>Time</label><br>
+        {% elif orderby == 'calories' %}
+          <input type='radio' id='calories' name='orderby' value='calories' checked>
+          <label for='calories'>Calories</label><br>
+          <input type='radio' id='time' name='orderby' value='time'>
+          <label for='time'>Time</label><br>
+        {% else %}
+          <input type='radio' id='calories' name='orderby' value='calories' checked>
+          <label for='calories'>Calories</label><br>
+          <input type='radio' id='time' name='orderby' value='time' checked>
+          <label for='time'>Time</label><br>
+        {% endif %}
+      
+      </div>
+      <div class="col-12 col-md-4 text-center">
+        <h4 class=text-center>Special Diet</h4>
+          {% if veggie == 'none' %}
+          <input type='checkbox' id='vegeterian' name='restrict' value='vegeterian'>
+          {% else %}
+          <input type='checkbox' id='vegeterian' name='restrict' value='vegeterian' checked>
+          {% endif %}
+          <label for='vegeterian'>Vegeterian</label><br>
+          {% if vegan == 'none' %}
+          <input type='checkbox' id='vegan' name='restrict' value='vegan'>
+          {% else %}
+          <input type='checkbox' id='vegan' name='restrict' value='vegan' checked>
+          {% endif %}
+          <label for='vegan'>Vegan</label><br>
+          {% if gluten_free == 'none' %}
+          <input type='checkbox' id='gluten' name='restrict' value='gluten'>
+          {% else %}
+          <input type='checkbox' id='gluten' name='restrict' value='gluten' checked>
+          {% endif %}
+          <label for='gluten'>Gluten Free</label><br>
+      </div>
+      <div class="col-12 col-md-4 text-center">
+        <h4 class=text-center>Meal Type</h4>
+          {% if meal_type == 'none' %}
+          <input type='radio' id='breakfast' name='meal_type' value='breakfast'>
+          <label for='breakfast'>Breakfast</label><br>
+          <input type='radio' id='lunch' name='meal_type' value='lunch'>
+          <label for='lunch'>Lunch/Dinner</label><br>
+          <input type='radio' id='dessert' name='meal_type' value='dessert'>
+          <label for='dessert'>Dessert</label><br>
+          {% elif meal_type == 'lunch' %}
+          <input type='radio' id='breakfast' name='meal_type' value='breakfast'>
+          <label for='breakfast'>Breakfast</label><br>
+          <input type='radio' id='lunch' name='meal_type' value='lunch' checked>
+          <label for='lunch'>Lunch/Dinner</label><br>
+          <input type='radio' id='dessert' name='meal_type' value='dessert'>
+          <label for='dessert'>Dessert</label><br>
+          {% elif meal_type == 'breakfast' %}
+          <input type='radio' id='breakfast' name='meal_type' value='breakfast' checked>
+          <label for='breakfast'>Breakfast</label><br>
+          <input type='radio' id='lunch' name='meal_type' value='lunch'>
+          <label for='lunch'>Lunch/Dinner</label><br>
+          <input type='radio' id='dessert' name='meal_type' value='dessert'>
+          <label for='dessert'>Dessert</label><br>
+          {% else %}
+          <input type='radio' id='breakfast' name='meal_type' value='breakfast'>
+          <label for='breakfast'>Breakfast</label><br>
+          <input type='radio' id='lunch' name='meal_type' value='lunch'>
+          <label for='lunch'>Lunch/Dinner</label><br>
+          <input type='radio' id='dessert' name='meal_type' value='dessert' checked>
+          <label for='dessert'>Dessert</label><br>
+          {% endif %}
+      </div>
+  </div>
+    <div class="row" style="justify-content: space-around;">
+      <button type="submit" id='save' name='save' value='save'>Show Preferences</button>
+    </div>
+  </form>
+  <form method="POST" action="#">
+    {% csrf_token %}
+    <div class="row topper">
+    {% for user_recipe in posts%}
+    <div class="col-lg-6 col-md-12 col-sm-12 text-center">
+      <div class="recipe-container text-center">
+        <a href= {{user_recipe.recipe.url}} target="_blank"><h4 class="recipe-title">{{user_recipe.recipe.name}}</h4></a>
+        <div class="img-container position-relative start-50 bottom-50">
+          <img src={{user_recipe.recipe.image}} alt='photo of {{user_recipe.recipe.name}}'> 
+          {% if user in user_recipe.recipe.checked.all%}
+            <button type="submit", class = 'add-position-fixed', id = 'c{{user_recipe.recipe.id}}' value='{{user_recipe.recipe.id}}'><i class="bi bi-check-lg"></i></button>
+          {% else %}
+            <button type="submit", class = 'add-position-fixed', id = 'c{{user_recipe.recipe.id}}' value='{{user_recipe.recipe.id}}'><i class="bi bi-plus-lg"></i></button>
+          {% endif %}
+          <button type="submit", class = 'showmore-position-fixed', id = 's{{user_recipe.recipe.id}}' value='{{user_recipe.recipe.id}}'><i class="bi bi-three-dots"></i></button>
+          <div class='info' id="showmore{{user_recipe.recipe.id}}">
+            <p id="time{{user_recipe.recipe.id}}"></p>
+            <p id="cal{{user_recipe.recipe.id}}"></p>
+            <p id="genres{{user_recipe.recipe.id}}"></p>
+          </div>
+          <div class="progress">
+            {% if user_recipe.percent > 65%}
+            <div class="progress-bar" role="progressbar" style="width: {{user_recipe.percent}}%;" aria-valuenow="{{user_recipe.percent}}" aria-valuemin="0" aria-valuemax="100"><p style="padding-top: 15px;">{{user_recipe.percent}}% match</p></div>
+            {% else %}
+            <div class="progress-bar" role="progressbar" style="width: {{user_recipe.percent}}%;" aria-valuenow="{{user_recipe.percent}}" aria-valuemin="0" aria-valuemax="100"></div>
+            <p>{{user_recipe.percent}}% match</p>
+            {% endif %}
+          </div>
+        </div>
+        {% if user in user_recipe.recipe.liked.all%}
+          <button type='submit', class = 'like', id = 'l{{user_recipe.recipe.id}}' value='{{user_recipe.recipe.id}}'><i class="bi bi-hand-thumbs-up-fill"></i></button>
+        {% else %}
+          <button type='submit', class = 'like', id = 'l{{user_recipe.recipe.id}}' value='{{user_recipe.recipe.id}}'><i class="bi bi-hand-thumbs-up"></i></button>
+        {% endif %}
+        {% if user in user_recipe.recipe.disliked.all%}
+          <button type="submit", class = 'dislike', id = 'd{{user_recipe.recipe.id}}' value='{{user_recipe.recipe.id}}'><i class="bi bi-hand-thumbs-down-fill"></i></button>
+        {% else %}
+          <button type="submit", class = 'dislike', id = 'd{{user_recipe.recipe.id}}' value='{{user_recipe.recipe.id}}'><i class="bi bi-hand-thumbs-down"></i></button>
+        {% endif %}
+      </div>
+    </div>
+      {% if forloop.counter|divisibleby:4 %}</div><div class="row">{% endif %}
+        {% if forloop.last %}</div>{% endif %}
+    {% endfor %}
+  </form>
+
+  {% if posts.paginator.num_pages > 1 %}
+    <div class="pagination">
+      {% if posts.has_previous %}
+      <a class="pagination-action" href="?page=1">
+          <i class="fa fa-angle-double-left" aria-hidden="true"></i> </a>
+      <a class="pagination-action" href="?page={{ posts.previous_page_number }}">
+          <i class="fa fa-angle-left" aria-hidden="true"></i>
+      </a>
+      {% endif %}
+      {% for num in posts.paginator.page_range %}
+          {% if posts.number == num %}
+              <span class="pagination-number pagination-current">{{ num }}</span>
+          {% elif num > posts.number|add:'-3' and num < posts.number|add:'3' %}
+              <a class="pagination-number" href="?page={{ num }}">{{ num }}</a>
+          {% endif %}
+      {% endfor %}
+      {% if posts.has_next %}
+          <a class="pagination-action" href="?page={{ posts.next_page_number }}">
+              <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </a>
+          <a class="pagination-action" href="?page={{ posts.paginator.num_pages }}">
+              <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+          </a>
+      {% endif %}
+    </div>
+  {% endif %}
+
+    {% else %}
+    <a href="/login">Login Here to Access Content</a>
+    {% endif%}
+    </div>
+{% endblock %}
+
+{% block javascript %}
+<script>
+  $(document).on('click', '.add-position-fixed', function (h) {
+    h.preventDefault();
+    $(this).attr('disabled', true);
+    $.ajax({
+    type: 'POST',
+    url: '{% url "main:add_recipe" %}',
+    data: {
+    postid: $(this).val(),
+    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+    action: 'post',
+    },
+    success: function (json) {
+        var recipechecked = document.getElementById('c' + json['id']);
+        $(recipechecked).attr('disabled', false);
+        if (json['result'] == 'checked') {
+        recipechecked.innerHTML = '<i class="bi bi-check-lg"></i>'
+        }
+        else {
+        recipechecked.innerHTML = '<i class="bi bi-plus-lg"></i>'
+        }
+    },
+    error: function (xhr, errmsg, err) {
+
+    }
+    });
+})
+
+$(document).on('click', '.like', function (t) {
+    t.preventDefault();
+    $.ajax({
+    type: 'POST',
+    url: '{% url "main:like" %}',
+    data: {
+        postid: $(this).val(),
+        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+        action: 'post',
+    },
+    success: function (json) {
+        var recipeliked = document.getElementById('l' + json['id']);
+        if (json['result'] == 'liked') {
+        recipeliked.innerHTML = '<i class="bi bi-hand-thumbs-up-fill"></i>'
+        var recipedis = document.getElementById('d' + json['id']);
+        recipedis.innerHTML = '<i class="bi bi-hand-thumbs-down"></i>'
+        }
+        else {
+        recipeliked.innerHTML = '<i class="bi bi-hand-thumbs-up"></i>'
+        }
+    },
+    error: function (xhr, errmsg, err) {
+
+    }
+    });
+})
+
+$(document).on('click', '.dislike', function (h) {
+    h.preventDefault();
+    $.ajax({
+    type: 'POST',
+    url: '{% url "main:dislike" %}',
+    data: {
+    postid: $(this).val(),
+    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+    action: 'post',
+    },
+    success: function (json) {
+    var recipedis = document.getElementById('d' + json['id']);
+        if (json['result'] == 'disliked') {
+        recipedis.innerHTML = '<i class="bi bi-hand-thumbs-down-fill"></i>';
+        var recipeliked = document.getElementById('l' + json['id']);
+        recipeliked.innerHTML = '<i class="bi bi-hand-thumbs-up"></i>'
+        }
+        else if (json['result'] == 'undisliked') {
+        recipedis.innerHTML = '<i class="bi bi-hand-thumbs-down"></i>';
+        }
+    },
+    error: function (xhr, errmsg, err) {
+
+    }
+    });
+})
+
+$(document).on('click', '.showmore-position-fixed', function (b) {
+  b.preventDefault();
+  $.ajax({
+  type: 'POST',
+  url: '{% url "main:showmore" %}',
+  data: {
+  postid: $(this).val(),
+  csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+  action: 'post',
+  },
+  success: function (json) {
+      const info = document.getElementById('showmore' + json['id']);
+      if (info.style.visibility == 'visible') {
+        info.style.visibility = 'hidden'
+      }
+      else {
+        document.getElementById('time' + json['id']).textContent = json['time']
+        document.getElementById('cal' + json['id']).textContent = json['calories']
+        document.getElementById('genres' + json['id']).textContent = json['genres']
+        info.style.visibility = 'visible'
+     }
+
+  },
+  error: function (xhr, errmsg, err) {
+
+  }
+  });
+}) 
+</script>
+{% endblock %}
+

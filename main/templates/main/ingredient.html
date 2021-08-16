@@ -1,0 +1,97 @@
+{% extends "main/base.html" %}
+{% block title %}Choose Ingredients {% endblock %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'main/css/ingredient.css' %}">
+{% if user.is_authenticated%}
+    <div class="row topper text-center">
+    <h1>Choose your ingredients</h1>
+    </div>
+    <div class="row">
+        <form method="POST" action="#">
+        {% csrf_token %}
+        {% if selected == 'show selected'%}
+            <button type="submit" id='show' name='save' value='select'>Show Selected Ingredients Only</button>
+        {% else %}
+            <button type="submit" id='show' name='save' value='no select'>Show All Ingredients</button>
+        {% endif %}
+        </form>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12 text-center">
+            <input id="searchbar" onkeyup ="search_ingredient()" type="text" name="search" placeholder="Search ingredients..">
+            <form method="POST" action="#">
+                {% csrf_token %}
+                {% for ingredient in non_ors%}
+                    <div class="ingredient-container">
+                            <div class='ingredient' id= div{{ingredient.id}}>
+                                {% if user in ingredient.checked.all %}
+                                <button type="submit", class = "add_or_remove", id= 'button{{ingredient.id}}', value="{{ingredient.id}}"><i class="bi bi-check-lg"></i></button>
+                                {{ingredient}}
+                                {% else %}
+                                <button type="submit", class="add_or_remove", id= 'button{{ingredient.id}}' value="{{ingredient.id}}"><i class="bi bi-plus-lg"></i></button>
+                                {{ingredient}}
+                            {% endif %}
+                            </div>
+                    </div>
+                    {% endfor %}
+                </form>
+            </form>
+        </div>
+    </div>
+
+    {% else%}
+        <a href="/login">Login Here to Access Content</a>
+    {% endif %}
+{% endblock %}
+{% block javascript %}
+<script>
+    function search_ingredient(event) {
+    let input = document.getElementById('searchbar').value
+    input = input.toLowerCase();
+    let x = document.getElementsByClassName('ingredient-container');
+     
+    for (i = 0; i < x.length; i++) {
+        if (!x[i].innerHTML.toLowerCase().includes(input)) {
+            x[i].style.display = "none";
+        }
+        else {
+            console.log(x[i].innerHTML)
+            x[i].style.display = "block";                
+        }
+    }
+}
+</script>
+<script>
+    $(document).on('click', '.add_or_remove', function (h) {
+    h.preventDefault();
+    $(this).attr('disabled', true);
+    var ingredientchecked = document.getElementById('button' + $(this).val());
+    if (ingredientchecked.innerHTML == '<i class="bi bi-check-lg"></i>') {
+        ingredientchecked.innerHTML = '<i class="bi bi-plus-lg"></i>';
+    }
+    else {
+        ingredientchecked.innerHTML = '<i class="bi bi-check-lg"></i>';
+    }
+
+    $.ajax({
+    type: 'POST',
+    url: '{% url "main:add_ingredient" %}',
+    data: {
+    postid: $(this).val(),
+    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+    action: 'post',
+    },
+    success: function (json) {
+        var ingredientchecked = document.getElementById('button' + json['id']);
+        $(ingredientchecked).attr('disabled', false);
+    },
+    error: function (xhr, errmsg, err) {
+
+    }
+    });
+})
+</script>
+{% endblock %}

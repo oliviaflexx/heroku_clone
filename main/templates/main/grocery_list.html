@@ -1,0 +1,76 @@
+{% extends "main/base.html" %}
+{% block title %}Grocery list{% endblock %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'main/css/grocery.css' %}">
+{% if user.is_authenticated%}
+<div class="row topper" style="justify-content: space-around;">
+  <h1>My Grocery List</h1>
+</div>
+<table>
+    <tr>
+      <th>Checklist</th>
+      <th>Name</th>
+      <th>Amount</th> 
+      <th>Unit</th>
+    </tr>
+    <form method="post" action="#"></form>
+    {% csrf_token %}
+    {% for ingredient in ingredients %}
+    <tr>
+      {% if ingredient.checked == True %}
+      <td><input class="checky" type="checkbox" value="{{ingredient.id}}" id="{{ingredient.id}}" checked></td>
+      {% else %}
+      <td><input class="checky" type="checkbox" value="{{ingredient.id}}" id="{{ingredient.id}}"></td>
+      {% endif %}
+    </form>
+      <td>{{ingredient.name}}</td>
+      <td>{{ingredient.amount}}</td>
+      <td>{{ingredient.unit}}</td>
+    </tr>
+
+    {% endfor %}
+  </table>
+  <div class="row">
+    <div class="col-md-12 text-center">
+    <p>List of Recipes</p>
+    {% for recipe in recipes%}
+      <a href={{recipe.recipe.url}}>{{recipe.name}}</a>
+      <br>
+    {% endfor %}
+    </div>
+  </div>
+  
+{% else%}
+<a href="/login">Login Here to Access Content</a>
+{% endif %}
+{% endblock %}
+{% block javascript%}
+<script>
+  $(document).on('click', '.checky', function (t) {
+    t.preventDefault();
+    $.ajax({
+    type: 'POST',
+    url: '{% url "main:checky" %}',
+    data: {
+        postid: $(this).val(),
+        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+        action: 'post',
+    },
+    success: function (json) {
+        var grocery = document.getElementById(json['id']);
+        if (json['checked'] == 'yes') {
+          grocery.checked = true;
+        }
+        else {
+          grocery.checked = false;
+        }
+    },
+    error: function (xhr, errmsg, err) {
+
+    }
+    });
+})
+</script>
+{% endblock %}

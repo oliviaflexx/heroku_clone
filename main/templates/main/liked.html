@@ -1,0 +1,168 @@
+{% extends "main/base.html" %}
+{% block title %}Your Liked recipes{% endblock %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'main/css/allrecipes.css' %}">
+<link rel="stylesheet" href="{% static 'main/css/pagination_blue.css' %}">
+
+  {% if user.is_authenticated%}
+  <div class="row topper" style="justify-content: space-around;">
+    <h1>Your Liked Recipes</h1>
+  </div>
+      <form method="POST" action="#">
+        {% csrf_token %}
+        <div class="row topper">
+          {% for recipe in recipes%}
+            <div class="col-lg-6 col-md-12 col-sm-12 text-center">
+              <div class="recipe-container text-center">
+                <a href= {{recipe.url}} target="_blank"><h4 class="recipe-title">{{recipe.name}}</h4></a>
+                <div class="img-container position-relative start-50 bottom-50">
+                  <img src={{recipe.image}} alt='photo of {{recipe.name}}'> 
+                  {% if user in recipe.checked.all %}
+                    <button type="submit", class = 'add-position-fixed', id = 'c{{recipe.id}}' value='{{recipe.id}}'><i class="bi bi-check-lg"></i></button>
+                  {% else %}
+                    <button type="submit", class = 'add-position-fixed', id = 'c{{recipe.id}}' value='{{recipe.id}}'><i class="bi bi-plus-lg"></i></button>
+                  {% endif %}
+                  <button type="submit", class = 'showmore-position-fixed', id = 's{{recipe.id}}' value='{{recipe.id}}'><i class="bi bi-three-dots"></i></button>
+                  <div class='info' id="showmore{{recipe.id}}">
+                    <p id="time{{recipe.id}}"></p>
+                    <p id="cal{{recipe.id}}"></p>
+                    <p id="genres{{recipe.id}}"></p>
+                  </div>
+                </div>
+                {% if user in recipe.liked.all %}
+                  <button type='submit', class = 'like', id = 'l{{recipe.id}}' value='{{recipe.id}}'><i class="bi bi-hand-thumbs-up-fill"></i></button>
+                {% else %}
+                  <button type='submit', class = 'like', id = 'l{{recipe.id}}' value='{{recipe.id}}'><i class="bi bi-hand-thumbs-up"></i></button>
+                {% endif %}
+                {% if user in recipe.disliked.all %}
+                  <button type="submit", class = 'dislike', id = 'd{{recipe.id}}' value='{{recipe.id}}'><i class="bi bi-hand-thumbs-down-fill"></i></button>
+                {% else %}
+                  <button type="submit", class = 'dislike', id = 'd{{recipe.id}}' value='{{recipe.id}}'><i class="bi bi-hand-thumbs-down"></i></button>
+                {% endif %}
+              </div>
+            </div>
+            {% if forloop.counter|divisibleby:4 %}</div><div class="row">{% endif %}
+              {% if forloop.last %}</div>{% endif %}
+            {% endfor %}
+        </form>
+    {% else %}
+    <a href="/login">Login Here to Access Content</a>
+    {% endif%}
+    </div>
+{% endblock %}
+
+{% block javascript %}
+<script>
+  $(document).on('click', '.add-position-fixed', function (h) {
+    h.preventDefault();
+    $(this).attr('disabled', true);
+    $.ajax({
+    type: 'POST',
+    url: '{% url "main:add_recipe" %}',
+    data: {
+    postid: $(this).val(),
+    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+    action: 'post',
+    },
+    success: function (json) {
+        var recipechecked = document.getElementById('c' + json['id']);
+        $(recipechecked).attr('disabled', false);
+        if (json['result'] == 'checked') {
+        recipechecked.innerHTML = '<i class="bi bi-check-lg"></i>'
+        }
+        else {
+        recipechecked.innerHTML = '<i class="bi bi-plus-lg"></i>'
+        }
+    },
+    error: function (xhr, errmsg, err) {
+
+    }
+    });
+})
+
+$(document).on('click', '.like', function (t) {
+    t.preventDefault();
+    $.ajax({
+    type: 'POST',
+    url: '{% url "main:like" %}',
+    data: {
+        postid: $(this).val(),
+        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+        action: 'post',
+    },
+    success: function (json) {
+        var recipeliked = document.getElementById('l' + json['id']);
+        if (json['result'] == 'liked') {
+        recipeliked.innerHTML = '<i class="bi bi-hand-thumbs-up-fill"></i>'
+        var recipedis = document.getElementById('d' + json['id']);
+        recipedis.innerHTML = '<i class="bi bi-hand-thumbs-down"></i>'
+        }
+        else {
+        recipeliked.innerHTML = '<i class="bi bi-hand-thumbs-up"></i>'
+        }
+    },
+    error: function (xhr, errmsg, err) {
+
+    }
+    });
+})
+
+$(document).on('click', '.dislike', function (h) {
+    h.preventDefault();
+    $.ajax({
+    type: 'POST',
+    url: '{% url "main:dislike" %}',
+    data: {
+    postid: $(this).val(),
+    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+    action: 'post',
+    },
+    success: function (json) {
+    var recipedis = document.getElementById('d' + json['id']);
+        if (json['result'] == 'disliked') {
+        recipedis.innerHTML = '<i class="bi bi-hand-thumbs-down-fill"></i>';
+        var recipeliked = document.getElementById('l' + json['id']);
+        recipeliked.innerHTML = '<i class="bi bi-hand-thumbs-up"></i>'
+        }
+        else if (json['result'] == 'undisliked') {
+        recipedis.innerHTML = '<i class="bi bi-hand-thumbs-down"></i>';
+        }
+    },
+    error: function (xhr, errmsg, err) {
+
+    }
+    });
+})
+
+$(document).on('click', '.showmore-position-fixed', function (b) {
+  b.preventDefault();
+  $.ajax({
+  type: 'POST',
+  url: '{% url "main:showmore" %}',
+  data: {
+  postid: $(this).val(),
+  csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+  action: 'post',
+  },
+  success: function (json) {
+      const info = document.getElementById('showmore' + json['id']);
+      if (info.style.visibility == 'visible') {
+        info.style.visibility = 'hidden'
+      }
+      else {
+        document.getElementById('time' + json['id']).textContent = json['time']
+        document.getElementById('cal' + json['id']).textContent = json['calories']
+        document.getElementById('genres' + json['id']).textContent = json['genres']
+        info.style.visibility = 'visible'
+     }
+
+  },
+  error: function (xhr, errmsg, err) {
+
+  }
+  });
+}) 
+</script>
+{% endblock %}

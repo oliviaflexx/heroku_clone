@@ -1,0 +1,41 @@
+body {
+    background-color: white;
+    color: #03071E;
+    height: 100%;
+    position: relative;
+}
+a.nav-item {
+    color: black; 
+}
+a.nav-item:hover {
+    color: white;
+}
+.large-icon {
+    font-size: 25px;
+}
+.navbar {
+    background: linear-gradient(45deg, #FF7B00, #FFC300);
+    font-family: 'Montserrat', sans-serif;
+}
+
+#content.main {
+    background-color: white;
+    min-height: 100vh; /* will cover the 100% of viewport */
+    overflow: hidden;
+    display: block;
+    position: relative;
+    padding-bottom: 56px; /* height of your footer */
+    font-family: 'Montserrat', sans-serif;
+}
+
+footer .footer-copyright {
+    background-color: black;
+    color: white;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+footer a {
+    color: white;
+}
+

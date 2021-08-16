@@ -1,0 +1,53 @@
+{% extends "main/base.html" %}
+{% block title %}HomePage{% endblock %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'main/css/home.css' %}">
+<div class="row">
+    <div class="col-12 text-center" id="top_orange" style="background-image: url({% static 'main/images/orange.png' %});">
+        <h1>Grocery List Making Made Easy</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12 col-md-6 text-center">
+        <div class="instructions">
+            <h2>Step 1</h2>
+            <p>Add your ingredients</p>
+            <p>Simply type in your ingredients and click the plus button to add them to your ingredients</p>
+        </div>
+    </div>
+    <div class="col-12 col-md-6">
+        <img class="animate-step1" src="{% static 'main/images/2.png' %}">
+    </div>
+</div>
+<div class="row">
+    <div class="col-12 col-md-6 text-center">
+        <div class="instructions">
+            <h2>Step 2</h2>
+            <p>Based on what ingredients you have, we find recipes that best match what you have.
+                From there, you can click on the plus button to add a recipe that you want to make to your grocery list.
+                You can also like and dislike recipes so you don't forget how you feel about them when making grocery lists in the future.
+                Click on the three dots if you'd like more information about the recipe like the amount of time it takes and how many calories it is.
+                Narrow the recipes down to exactly what you're looking for using our filters and preferences.
+            </p>
+        </div>
+    </div>
+    <div class="col-12 col-md-6">
+        <img class="animate-step2" src="{% static 'main/images/3.png' %}">
+    </div>
+</div>
+<div class="row">
+    <div class="col-12 col-md-6 text-center">
+        <div class="instructions">
+            <h2>Step 3</h2>
+            <p>We create a grocery list for the recipes you chose. 
+                We tell you exactly how much of each ingredient you need so no more need to pull out your calculator or forget anything!
+            </p>
+        </div>
+    </div>
+    <div class="col-12 col-md-6">
+        <img class="animate-step3" src="{% static 'main/images/4.png' %}">
+    </div>
+</div>
+{% endblock %}
