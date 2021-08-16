@@ -354,14 +354,14 @@ def addData(request):
             if time == '':
                 time = 0
             url = row['url'].replace('\'','')
-            print(url)
             image = row['image']
             calories = row['calories']
             if calories == '':
                 calories = 0
             recipe = recipes3.objects.create(name=recipe_name,time=time,url=url,image=image,calories=calories)
             recipe.save()
-
+            print(recipe_name)
+            
             url = 'https://raw.githubusercontent.com/oliviaflexx/recipe/main/django_recipe/mysite/main/recipe_ingredients.csv'
             df2 = pd.read_csv(url, error_bad_lines=False)
             for index, ing_row in df2.iterrows():
@@ -380,7 +380,7 @@ def addData(request):
                         recipe_ingredients = recipe_ingredients3.objects.create(recipe=recipe, ingredient=ingredient_query, amount=amount, unit=unit)
                         recipe_ingredients.save()
                     except ingredients3.DoesNotExist:
-                        print(ingredient)
+                        print('ingredient doesnt exist')
 
             url = 'https://raw.githubusercontent.com/oliviaflexx/recipe/main/django_recipe/mysite/main/genres.csv'
             df3 = pd.read_csv(url, error_bad_lines=False)
@@ -392,7 +392,7 @@ def addData(request):
                         genre_query = genres3.objects.get(name=genre)
                         recipe.genre.add(genre_query)
                     except genres3.DoesNotExist:
-                        print(genre_recipe_name)
+                        print('genre doenst exist')
 
         url = 'https://raw.githubusercontent.com/oliviaflexx/recipe/main/django_recipe/mysite/main/or_ingredients.csv'
         df4 = pd.read_csv(url, error_bad_lines=False)
@@ -405,5 +405,6 @@ def addData(request):
             entry.save()
                     
         return JsonResponse({'added': 'yes'})
+
     else:
         return render(request, 'main/add_data.html')
