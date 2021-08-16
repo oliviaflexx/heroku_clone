@@ -330,8 +330,8 @@ def groceryList(response):
         return render(response, 'main/grocery_list.html')
 
 
-def addData(response):
-    if response.method == 'POST':
+def addData(request):
+    if request.POST.get('action') == 'post':
         recipes3.objects.all().delete()
         ingredients3.objects.all().delete()
         recipe_ingredients3.objects.all().delete()
@@ -404,6 +404,6 @@ def addData(response):
             entry = or_ingredients.objects.create(or_name=or_name, in_name=in_name)
             entry.save()
                     
-        return HttpResponse("Data added")
+        return JsonResponse({'added': 'yes'})
     else:
-        return render(response, 'main/add_data.html')
+        return render(request, 'main/add_data.html')
