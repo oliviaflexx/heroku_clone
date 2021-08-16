@@ -412,7 +412,7 @@ def addData(request):
         return render(request, 'main/add_data.html')
 
 async def addData_async(request):
-    if request.POST.get('action') == 'post':
+    if request.method == "POST":
         task1 = asyncio.ensure_future(addDataAsync())
         await asyncio.wait([task1])
         return JsonResponse({'added': 'yes'})
