@@ -9,6 +9,7 @@ import inflect
 from .funky import add_up, sub_out
 from django.core.paginator import Paginator
 import json
+import pandas as pd
 
 def checky(request):
     if request.POST.get('action') == 'post':
@@ -338,9 +339,10 @@ def addData(response):
         user_recipes.objects.all().delete()
         grocery_list.objects.all().delete()
 
-        with open('names.csv', mode='r') as csv_file:
-            csv_reader = csv.DictReader(csv_file)
-            for row in csv_reader:
+        url = 'https://raw.githubusercontent.com/oliviaflexx/recipe/main/django_recipe/mysite/main/names.csv'
+        df = pd.read_csv(url, error_bad_lines=False)
+        for index, row in df.iterrows():
+            for row in df:
                 ingredient = row['ingredient']
                 entry = ingredients3(name=ingredient)
                 entry.save()
