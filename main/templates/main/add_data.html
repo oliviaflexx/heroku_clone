@@ -13,6 +13,7 @@
 <script>
     $(document).on('click', '.clicker', function (t) {
     t.preventDefault();
+    this.style.color = "blue"
     $.ajax({
     type: 'POST',
     url: '{% url "main:addData" %}',
@@ -24,7 +25,7 @@
     success: function (json) {
         var button = document.getElementById('thing');
         if (json['added'] == 'yes') {
-        button.innerText = 'Data Added'
+        button.style.color = "red"
         }
     },
     error: function (xhr, errmsg, err) {
