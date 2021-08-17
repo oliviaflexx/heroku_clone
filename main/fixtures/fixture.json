@@ -1,6 +1,7 @@
 [
     {
         "model": "main.recipes3",
+        "pk": 1,
         "fields": { "name": "test_name",
             "time": "3",
             "url": "test_url.com",
