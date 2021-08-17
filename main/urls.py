@@ -16,5 +16,5 @@ urlpatterns = [
     path('showmore/',views.showmore, name='showmore'),
     path('dislike/', views.dislike, name='dislike'),
     path('add_ingredient/', views.add_ingredient, name="add_ingredient"),
-    path('checky/', views.checky, name="checky"),
+    path('checky/', views.checky, name="checky")
 ]
