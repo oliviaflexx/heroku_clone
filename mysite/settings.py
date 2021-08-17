@@ -152,3 +152,5 @@ INTERNAL_IPS = [
 django_heroku.settings(locals())
 
 os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
