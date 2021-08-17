@@ -37,3 +37,16 @@ table, th, td {
 p {
     font-size: 30px;
 }
+
+#login {
+    text-decoration: underline;
+    color: black;
+  }
+
+  #login:hover {
+    color: #FF7B00
+  }
+  #login_con {
+    padding-top: 100px; 
+    font-size: 30px;
+  }

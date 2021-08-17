@@ -7,8 +7,6 @@ from django import template
 from .funky import add_up, sub_out
 from django.core.paginator import Paginator
 import json
-import pandas as pd
-from .tasks import sleepy
 
 def checky(request):
     if request.POST.get('action') == 'post':
@@ -244,7 +242,7 @@ def ingredientPicker(response):
             
             return render(response, "main/ingredient.html", {'non_ors': ingredients, 'selected': 'show selected', 'user': response.user})
     else:
-        return redirect('/login')
+        return render(response, "main/ingredient.html")
 
 def myrecipes(response):
     
@@ -319,7 +317,7 @@ def liked_recipes(response):
         print(recipes)
         return render(response, 'main/liked.html', {'recipes': recipes, 'user': response.user})
     else:
-        return render(response, 'main/home.html')
+        return render(response, 'main/liked.html')
 
 def groceryList(response):
     # grocery_list.objects.all().delete()
@@ -327,83 +325,3 @@ def groceryList(response):
         return render(response, 'main/grocery_list.html', {'ingredients': grocery_list.objects.filter(user=response.user).order_by('name__name'), 'recipes': response.user.checked.all()})
     else:
         return render(response, 'main/grocery_list.html')
-
-def addDataAsync():
-    recipes3.objects.all().delete()
-    ingredients3.objects.all().delete()
-    recipe_ingredients3.objects.all().delete()
-    or_ingredients.objects.all().delete()
-    user_recipes.objects.all().delete()
-    grocery_list.objects.all().delete()
-
-    url = 'https://raw.githubusercontent.com/oliviaflexx/recipe/main/django_recipe/mysite/main/names.csv'
-    df = pd.read_csv(url, error_bad_lines=False)
-    for index, row in df.iterrows():
-        ingredient = row['ingredient']
-        entry = ingredients3(name=ingredient)
-        entry.save()
-
-    url = 'https://raw.githubusercontent.com/oliviaflexx/recipe/main/django_recipe/mysite/main/recipes3.csv'
-    df = pd.read_csv(url, error_bad_lines=False)
-    print(df)
-    for index, row in df.iterrows():
-        recipe_name = row['name']
-        time = row['time']
-        print(time)
-        if time == 'nan':
-            time = 0
-        url = row['url'].replace('\'','')
-        image = row['image']
-        calories = row['calories']
-        if calories == "nan":
-            calories = 0
-        recipe = recipes3.objects.create(name=recipe_name,time=time,url=url,image=image,calories=calories)
-        recipe.save()
-
-        url = 'https://raw.githubusercontent.com/oliviaflexx/recipe/main/django_recipe/mysite/main/recipe_ingredients.csv'
-        df2 = pd.read_csv(url, error_bad_lines=False)
-        for index, ing_row in df2.iterrows():
-            ing_recipe_name = ing_row['name']
-            ingredient = ing_row['ingredient']
-            amount = ing_row['amount']
-            if not amount:
-                amount = None
-            unit = ing_row['unit']
-            if not unit:
-                unit = None
-            if ing_recipe_name == recipe_name:
-                try:
-                    ingredient_query = ingredients3.objects.get(name=ingredient)
-                    recipe.ingredients.add(ingredient_query)
-                    recipe_ingredients = recipe_ingredients3.objects.create(recipe=recipe, ingredient=ingredient_query, amount=amount, unit=unit)
-                    recipe_ingredients.save()
-                except ingredients3.DoesNotExist:
-                    print('ingredient doesnt exist')
-
-        url = 'https://raw.githubusercontent.com/oliviaflexx/recipe/main/django_recipe/mysite/main/genres.csv'
-        df3 = pd.read_csv(url, error_bad_lines=False)
-        for index, genre_row in df3.iterrows():
-            genre_recipe_name = genre_row['recipe_name']
-            genre = genre_row['genre']
-            if genre_recipe_name == recipe_name:
-                try:
-                    genre_query = genres3.objects.get(name=genre)
-                    recipe.genre.add(genre_query)
-                except genres3.DoesNotExist:
-                    print('genre doenst exist')
-
-        print(recipe_name)
-
-    url = 'https://raw.githubusercontent.com/oliviaflexx/recipe/main/django_recipe/mysite/main/or_ingredients.csv'
-    df4 = pd.read_csv(url, error_bad_lines=False)
-    for index, or_row in df4.iterrows():
-        or_name = or_row['or_name']
-        or_name = ingredients3.objects.get(name=or_name)
-        in_name = or_row['in_name']
-        in_name = ingredients3.objects.get(name=in_name)
-        entry = or_ingredients.objects.create(or_name=or_name, in_name=in_name)
-        entry.save()
-
-def addData(request):
-    sleepy.delay()
-    return render(request, 'main/add_data.html')

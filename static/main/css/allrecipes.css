@@ -144,3 +144,15 @@ div.recipe-container {
     padding-left: 10px;
     font-size: 20px;
   }
+
+  #login {
+    text-decoration: underline;
+  }
+
+  #login:hover {
+    color: #FF7B00
+  }
+  #login_con {
+    padding-top: 100px; 
+    font-size: 30px;
+  }

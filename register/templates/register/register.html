@@ -1,10 +1,14 @@
 {% extends "main/base.html" %}
 
 {% block title %}Create an Account{% endblock %}
-{% load crispy_forms_tags %}
 
+{% load crispy_forms_tags %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'register/css/register.css' %}">
 {% block content %}
-    <form method="POST" class="form-group">
+    <form method="POST" class="form-group" style= "padding-left: 30px;
+    padding-top: 50px;
+    padding-right: 30px;">
 	{% csrf_token %}
 	{{ form|crispy }}
 	<button type="submit" class="btn btn-success">Register</button>
