@@ -1,0 +1,13 @@
+[
+    {
+        "model": "main.recipes3",
+        "fields": { "name": "test_name",
+            "time": "3",
+            "url": "test_url.com",
+            "image": "test_image",
+            "calories": "3",
+            "ingredients": ["45557", "45558", "45560"],
+            "genre": ["1", "2"]
+        }
+    }
+]
