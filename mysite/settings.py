@@ -30,7 +30,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 
 DEBUG_TOOLBAR_CONFIG = {
@@ -151,8 +151,3 @@ INTERNAL_IPS = [
 django_heroku.settings(locals())
 
 os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
-
-CELERY_BROKER_URL = 'redis://:pf1d2e439fff9cb7af8ff2591762fdad37047e3d3cec1f8372a82dbd5be419eb1@ec2-52-44-132-236.compute-1.amazonaws.com:23420'
-
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
