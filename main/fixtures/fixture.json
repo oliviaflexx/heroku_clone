@@ -6,7 +6,7 @@
             "url": "test_url.com",
             "image": "test_image",
             "calories": "3",
-            "ingredients": ["45557", "45558", "45560"],
+            "ingredients": ["84500", "84497"],
             "genre": ["1", "2"]
         }
     }
