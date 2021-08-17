@@ -36,7 +36,7 @@ class recipe_ingredients3(models.Model):
     amount = models.FloatField(blank=True, null=True)
     unit = models.CharField(max_length=50, blank=True, null=True)
     def __str__(self):
-        return f'RECIPE: {self.recipe.name} INGREDIENT: {self.ingredient.name}'
+        return str(self.id)
 
 class or_ingredients(models.Model):
     or_name = models.ForeignKey('ingredients3', related_name='or_ingredient', on_delete=models.SET_NULL, null=True)
